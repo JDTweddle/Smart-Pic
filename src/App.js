@@ -5,6 +5,7 @@ import Recognition from './Components/Recognition/Recognition.js';
 import './App.css';
 import Logo from './Components/Logo/Logo.js';
 import ImageLinkForm from './Components/ImageLinkForm/ImageLinkForm.js';
+import AuthPage from './Components/AuthPage/AuthPage.js';
 
 window.process = {};
 
@@ -12,6 +13,7 @@ const initialState = {
   input: '',
   imageUrl: '',
   detections: [],
+  isSignedIn: false,
 };
 
 class App extends Component {
@@ -19,7 +21,7 @@ class App extends Component {
     super(props);
     this.state = initialState;
     this.app = new Clarifai.App({
-      apiKey: 'eb9dac37032d467f9b5330841b227b91',
+      apiKey: process.env.REACT_APP_CLARIFAI_API_KEY
     });
   }
 
@@ -75,22 +77,32 @@ class App extends Component {
     reader.readAsDataURL(file);
   };
 
+  handleSignIn = () => {
+    this.setState({ isSignedIn: true });
+  }
+
   render() {
-    const { imageUrl, detections } = this.state;
+    const { imageUrl, detections, isSignedIn } = this.state;
     return (
       <div className="App">
         <Particles />
-        <Logo />
-        <ImageLinkForm
-          onInputChange={this.onInputChange}
-          onButtonSubmit={this.onButtonSubmit}
-          onImageUpload={this.onImageUpload}
-        />
-        <Recognition
-          boxes={detections.map((d) => d.box)}
-          imageUrl={imageUrl}
-          concepts={detections.map((d) => d.concept)}
-        />
+        {!isSignedIn ? (
+          <AuthPage onSignIn={this.handleSignIn} />
+        ) : (
+          <>
+            <Logo />
+            <ImageLinkForm
+              onInputChange={this.onInputChange}
+              onButtonSubmit={this.onButtonSubmit}
+              onImageUpload={this.onImageUpload}
+            />
+            <Recognition
+              boxes={detections.map((d) => d.box)}
+              imageUrl={imageUrl}
+              concepts={detections.map((d) => d.concept)}
+            />
+          </>
+        )}
       </div>
     );
   }

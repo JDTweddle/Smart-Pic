@@ -16,7 +16,7 @@ const ImageLinkForm = ({ onInputChange, onButtonSubmit, onImageUpload }) => {
             onChange={onInputChange}
           />
           <input
-            className="b grow f4 pa2 w-25 ph4 grey"
+            className="b grow f4 pa2 w-25 ph4 dark-gray"
             type="file"
             accept="image/*"
             onChange={onImageUpload}
