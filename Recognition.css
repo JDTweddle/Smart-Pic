@@ -1,0 +1,13 @@
+.bounding-box {
+  position: absolute;
+  cursor: pointer;
+  border: 1px solid transparent; /* Initially no border */
+  transition: transform 2s ease; /* Smooth transitions */
+  opacity: 0; /* Initially hidden */
+  border-radius: 0%; /* Makes the box circular */
+}
+
+.bounding-box {
+  opacity: 1; /* Show bounding box */
+  transform: scale(0.8); /* Scale down the box */
+}
